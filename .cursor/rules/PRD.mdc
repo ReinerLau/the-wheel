@@ -1,0 +1,19 @@
+---
+description: 需求文档
+globs:
+alwaysApply: true
+---
+
+# 生理体征 (Dashboard 页)
+
+## 参数
+
+- 体温
+- 心率
+- 血压
+- 血氧
+
+## 展示
+
+- 各参数实时数据 (Element Plus - Statisic 组件)
+- 各参数当天整点的数据变化曲线 (Echarts - area chart)

@@ -1,0 +1,196 @@
+{
+  "hourlyData": [
+    {
+      "hour": 0,
+      "temperature": 36.2,
+      "heartRate": 65,
+      "systolic": 115,
+      "diastolic": 78,
+      "oxygenSaturation": 96
+    },
+    {
+      "hour": 1,
+      "temperature": 36.1,
+      "heartRate": 63,
+      "systolic": 112,
+      "diastolic": 76,
+      "oxygenSaturation": 96
+    },
+    {
+      "hour": 2,
+      "temperature": 36.0,
+      "heartRate": 62,
+      "systolic": 110,
+      "diastolic": 75,
+      "oxygenSaturation": 95
+    },
+    {
+      "hour": 3,
+      "temperature": 35.9,
+      "heartRate": 61,
+      "systolic": 108,
+      "diastolic": 74,
+      "oxygenSaturation": 95
+    },
+    {
+      "hour": 4,
+      "temperature": 35.8,
+      "heartRate": 60,
+      "systolic": 107,
+      "diastolic": 73,
+      "oxygenSaturation": 95
+    },
+    {
+      "hour": 5,
+      "temperature": 35.9,
+      "heartRate": 62,
+      "systolic": 109,
+      "diastolic": 74,
+      "oxygenSaturation": 96
+    },
+    {
+      "hour": 6,
+      "temperature": 36.2,
+      "heartRate": 68,
+      "systolic": 115,
+      "diastolic": 77,
+      "oxygenSaturation": 97
+    },
+    {
+      "hour": 7,
+      "temperature": 36.5,
+      "heartRate": 72,
+      "systolic": 120,
+      "diastolic": 80,
+      "oxygenSaturation": 98
+    },
+    {
+      "hour": 8,
+      "temperature": 36.7,
+      "heartRate": 75,
+      "systolic": 123,
+      "diastolic": 82,
+      "oxygenSaturation": 98
+    },
+    {
+      "hour": 9,
+      "temperature": 36.8,
+      "heartRate": 76,
+      "systolic": 125,
+      "diastolic": 83,
+      "oxygenSaturation": 99
+    },
+    {
+      "hour": 10,
+      "temperature": 36.9,
+      "heartRate": 77,
+      "systolic": 126,
+      "diastolic": 84,
+      "oxygenSaturation": 99
+    },
+    {
+      "hour": 11,
+      "temperature": 37.0,
+      "heartRate": 78,
+      "systolic": 127,
+      "diastolic": 84,
+      "oxygenSaturation": 99
+    },
+    {
+      "hour": 12,
+      "temperature": 37.1,
+      "heartRate": 79,
+      "systolic": 128,
+      "diastolic": 85,
+      "oxygenSaturation": 99
+    },
+    {
+      "hour": 13,
+      "temperature": 37.2,
+      "heartRate": 80,
+      "systolic": 129,
+      "diastolic": 85,
+      "oxygenSaturation": 99
+    },
+    {
+      "hour": 14,
+      "temperature": 37.1,
+      "heartRate": 79,
+      "systolic": 128,
+      "diastolic": 85,
+      "oxygenSaturation": 99
+    },
+    {
+      "hour": 15,
+      "temperature": 37.0,
+      "heartRate": 78,
+      "systolic": 127,
+      "diastolic": 84,
+      "oxygenSaturation": 99
+    },
+    {
+      "hour": 16,
+      "temperature": 36.9,
+      "heartRate": 76,
+      "systolic": 125,
+      "diastolic": 83,
+      "oxygenSaturation": 98
+    },
+    {
+      "hour": 17,
+      "temperature": 36.8,
+      "heartRate": 75,
+      "systolic": 123,
+      "diastolic": 82,
+      "oxygenSaturation": 98
+    },
+    {
+      "hour": 18,
+      "temperature": 36.7,
+      "heartRate": 73,
+      "systolic": 121,
+      "diastolic": 81,
+      "oxygenSaturation": 98
+    },
+    {
+      "hour": 19,
+      "temperature": 36.6,
+      "heartRate": 71,
+      "systolic": 119,
+      "diastolic": 79,
+      "oxygenSaturation": 97
+    },
+    {
+      "hour": 20,
+      "temperature": 36.5,
+      "heartRate": 69,
+      "systolic": 117,
+      "diastolic": 78,
+      "oxygenSaturation": 97
+    },
+    {
+      "hour": 21,
+      "temperature": 36.4,
+      "heartRate": 68,
+      "systolic": 116,
+      "diastolic": 77,
+      "oxygenSaturation": 97
+    },
+    {
+      "hour": 22,
+      "temperature": 36.3,
+      "heartRate": 66,
+      "systolic": 114,
+      "diastolic": 76,
+      "oxygenSaturation": 96
+    },
+    {
+      "hour": 23,
+      "temperature": 36.2,
+      "heartRate": 65,
+      "systolic": 113,
+      "diastolic": 76,
+      "oxygenSaturation": 96
+    }
+  ]
+}
