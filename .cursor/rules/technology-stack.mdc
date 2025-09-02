@@ -1,6 +1,6 @@
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: true
 ---
 
@@ -14,3 +14,4 @@ alwaysApply: true
 - Element Plus
 - Vitest (https://cn.vitest.dev/)
 - Vue Test Utils (https://test-utils.vuejs.org/zh/)
+- ECharts
