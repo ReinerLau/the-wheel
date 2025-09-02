@@ -1,0 +1,16 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Technology stack
+
+- Vue 3
+- Pinia
+- Vue Router
+- Vite
+- UnoCSS
+- Element Plus
+- Vitest (https://cn.vitest.dev/)
+- Vue Test Utils (https://test-utils.vuejs.org/zh/)

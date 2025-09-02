@@ -1,0 +1,161 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 远程监控
+
+## 需求
+
+- 选中列表中机器人
+    - 通过机器人编码连接 websocket 实时获取机器人状态
+    - 通过机器人编码通知视频推流得到拉流地址后播放视频
+- 支持机器人绑定指定地图
+
+## 相关文件
+
+- [MonitorIndex.vue](mdc:src/views/monitor/MonitorIndex.vue)
+- [RobotInformation.vue](mdc:src/views/monitor/components/RobotInformation.vue)
+- [RobotPosition.vue](mdc:src/views/monitor/components/RobotPosition.vue)
+- [CamerPlayer.vue](mdc:src/components/CamerPlayer.vue)
+- [monitor.ts](mdc:src/api/monitor.ts)
+- [map.ts](mdc:src/api/map.ts)
+
+## 获取机器人列表
+
+接口地址: /monitor/v1/robot
+
+请求方法: GET
+
+响应结构:
+
+```json
+[
+    {
+        // 机器人编码
+        "code": "WT2LM102161",
+        // 机器人名称
+        "name": "仓库机器人",
+        // 地图文件路径
+        "map": null,
+        // 状态
+        "status": 0,
+        // 机器人 IP
+        "ip": ""
+    }
+]
+```
+
+## 获取机器人状态
+
+接口地址: ws://localhost:5173/agvStatus/[机器人编码]
+
+消息结构:
+
+```json
+{
+    "agvState": {
+        // 电量
+        "battery": {
+            // 电量值
+            "level": 97
+        },
+        // 用于展示机器人在地图上坐标
+        "displayPosition": {
+            // 角度
+            "theta": 70.47359834194154,
+            // x 轴坐标
+            "x": 827.0,
+            // y 轴坐标
+            "y": 735.0
+        },
+        // 机器人实际坐标
+        "position": {
+            "theta": 0.3408,
+            "x": -0.4566,
+            "y": -1.6476
+        }
+    },
+    // 环境检测 (有可能 undefined)
+    "environment": {
+        // 温度
+        "temperature": 20.5,
+        // 湿度
+        "humidity": 80.5
+    }
+}
+```
+
+## 通知视频推流
+
+接口地址: /monitor/v1/publish
+
+请求方法: POST
+
+请求参数: robotCode
+
+响应数据: 拉流地址字符串
+
+## 绑定地图
+
+接口地址: /monitor/v1/binding
+
+请求方法: PUT
+
+请求参数: 
+
+```json
+{
+    // 地图 ID
+    "mapId": "",
+    // 机器人编码
+    "robotCode": ""
+}
+```
+
+## 播放视频
+
+### 获取 source_id
+
+接口地址: /ks/source
+
+响应数据:
+
+```json
+{
+  "data": [
+    {
+      // source_id
+      "id": "67ee25d7517034093ca86965",
+    }
+  ]
+}
+```
+
+### 获取 webrtc 地址
+
+接口地址: /stream/live/subscribe
+
+请求参数: source_id
+
+响应数据:
+
+```json
+{
+  // webrtc 地址
+  "data": "webrtc://127.0.0.1/live/74dd9ac8-67d6-4ddf-b9ef-f749952f457b/67ee25d7517034093ca86965"
+}
+```
+
+## 机器人操作
+
+接口地址: /monitor/v1/operate
+
+请求方法: POST
+
+请求参数:
+
+- robotCode: 机器人编码
+- type
+    - stop: 急停
+    - resume: 恢复

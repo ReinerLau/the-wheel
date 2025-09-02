@@ -1,0 +1,39 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 任务管理
+
+## 相关文件
+
+- [TaskList.vue](mdc:src/views/task/TaskList.vue)
+- [task.ts](mdc:src/api/task.ts)
+
+## 接口
+
+### 操作任务
+
+接口地址: /task/v1/operate
+
+请求方法: POST
+
+请求参数:
+
+- operation: 操作类型
+    - PAUSE: 暂停
+    - RESUME: 继续
+    - START: 开始
+    - STOP: 急停
+- taskId: 任务 id
+
+### 切换定时任务状态
+
+接口地址: /task/v1/schedule
+
+请求方法: PUT
+
+请求参数:
+
+- taskId: 任务 ID
+- enable: 状态(true/false)

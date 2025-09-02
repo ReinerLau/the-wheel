@@ -1,0 +1,26 @@
+---
+description: 
+globs: *.vue
+alwaysApply: false
+---
+# Vue specifications
+
+## <script> 标签
+
+- 组合式 API 风格
+- TypeScript 语法
+- 函数和变量添加 JSDoc 注释
+- 禁止使用 try/catch 捕获错误
+- 使用 [vite.config.ts](mdc:vite.config.ts) 中定义的别名规则引入模块
+
+## <style> 标签
+
+- 使用 SCSS 语法
+- 类选择器使用 [@apply](mdc:https:/tailwindcss.com/docs/functions-and-directives#apply-directive) 指令定义样式
+
+## <template> 标签
+
+1. 避免使用语义化标签
+2. 避免使用原生表单标签
+3. 适当给部分部分添加注释
+4. 优先使用 [Tailwind3](mdc:https:/v3.tailwindcss.com) 定义样式

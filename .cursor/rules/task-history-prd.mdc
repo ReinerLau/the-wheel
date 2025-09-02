@@ -1,0 +1,103 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 巡检历史
+
+## 巡检历史列表
+
+接口地址: /daily-task/v1/list
+
+请求方法: GET
+
+请求参数: 
+
+- limit: 每页数量
+- page: 页码
+- startTim: 任务开始时间
+- endTime: 任务结束时间
+- robotCode: 机器人编号
+
+响应数据: 
+
+```json
+{
+        // 总数
+        "total": 31,
+        "list": [
+            {
+                // 任务 ID
+                "recordId": "",
+                // 任务名称
+                "taskName": "25-4-13 test",
+                // 机器人编号
+                "robotCode": "WT2LM102161",
+                // 机器人名称 (string)
+                "robotName": null,
+                // 任务开始时间 (string)
+                "startTime": null,
+                // 任务结束时间 (string)
+                "endTime": null,
+                // 仓库名称列表
+                "warehouseName": [
+                    "A仓库"
+                ],
+                // 任务执行结果 (string)
+                "executionMessage": null,
+                // 视频地址 (string)
+                "videoUrl": null,
+                // 温度范围
+                "temperature": {
+                    // 最大值 (number)
+                    "max": null,
+                    // 最小值 (number)
+                    "min": null
+                },
+                // 湿度范围
+                "humidity": {
+                    // 最大值
+                    "max": null,
+                    // 最小值
+                    "min": null
+                },
+                // 告警数量
+                "alterCount": 0
+            },
+        ],
+}
+```
+
+## 告警历史列表
+
+接口地址: /perception-environment/v1/list/{recordId}
+
+请求方法: GET
+
+路径参数:
+
+- recordId: 任务 ID
+
+响应数据:
+
+```json
+[
+            {
+                // 机器人编号
+                "robotCode": "WT2LM102007",
+                "deviceId": "7b8e3e99-b534-4ef0-92be-1393d0958617",
+                // 机器人位置
+                "robotLocation": {
+                    "x": 838,
+                    "y": 622,
+                    "theta": 164.20949362534423698889440856873989105224609375
+                },
+                // 时间
+                "createdTime": "2025-04-03T11:12:29",
+                // 告警图片
+                "picPath": "http://192.168.1.160:9000/warehouse/image/alarm/2025/04/03/60d9af59517034d81889df6510347606290255643458.png",
+                // 告警内容
+                "message": "使用手机检测"
+            },
+]
+```

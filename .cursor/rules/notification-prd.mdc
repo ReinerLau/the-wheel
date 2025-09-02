@@ -1,0 +1,53 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 通知入口
+
+## 需求
+
+- 挂载后连接 websocket 监听告警消息录入到消息列表
+- 通知图标带数字角标表示新消息数量
+    - 无新消息则不显示数字角标
+    - 每次有新消息数角标数字加一
+    - 鼠标移动到通知图标显示列表后清空角标数字
+- 列表消息项显示内容
+    - 告警时间
+    - 告警内容
+- 点击列表消息项显示消息详情(使用[Description 组件](mdc:https:/element-plus.org/zh-CN/component/descriptions.html#%E5%9E%82%E7%9B%B4%E5%88%97%E8%A1%A8)展示)
+    - 告警时间
+    - 告警内容
+    - 告警图片(使用[图片预览](mdc:https:/element-plus.org/zh-CN/component/image.html#%E5%9B%BE%E7%89%87%E9%A2%84%E8%A7%88)方式展示)
+    - 告警地点
+    - 机器人编码
+
+## 相关文件
+
+- [NavbarNotification.vue](mdc:src/layout/NavbarNotification.vue)
+
+## 告警
+
+接口地址: ws://localhost:5173/alarm2
+
+消息结构:
+
+```json
+{
+    // 告警时间 (转换成北京时间显示)
+    "alertTime": "2025-04-03T14:02:34.633880000",
+    // 告警图片
+    "image": "http://192.168.18.229:19000/warehouse/image/alarm/2025/04/03/60d9af59517034d81889df658957283175562960126.png",
+    // 告警内容
+    "message": "使用手机检测",
+    // 告警地点
+    "point": {
+        "theta": -0.7703,
+        "x": 0.512,
+        "y": 0.0393
+    },
+    // 发出告警的机器人编码
+    "robotCode": "WT2LM102007"
+}
+```
+

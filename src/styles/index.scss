@@ -1,0 +1,20 @@
+body {
+  margin: 0;
+}
+
+#app {
+  height: 100vh;
+}
+
+a {
+  text-decoration: none;
+}
+
+.sortable-chosen {
+  background-color: #409eff;
+  color: white;
+  div {
+    background-color: #409eff;
+    color: white;
+  }
+}
