@@ -1,0 +1,9 @@
+---
+description: API 规范
+globs:
+alwaysApply: true
+---
+
+# API 规范
+
+- API 地址不带 /api 前缀
