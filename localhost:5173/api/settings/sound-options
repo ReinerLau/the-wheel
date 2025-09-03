@@ -16,6 +16,14 @@
     {
       "label": "提醒铃声",
       "value": "notification.mp3"
+    },
+    {
+      "label": "自定义铃声1",
+      "value": "custom1.mp3"
+    },
+    {
+      "label": "用户上传铃声",
+      "value": "user_upload.mp3"
     }
   ]
 }

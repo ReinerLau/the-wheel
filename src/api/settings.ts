@@ -147,3 +147,15 @@ export function deleteMedication(medicationId: string) {
     data: { id: medicationId }
   })
 }
+
+/**
+ * 删除铃声文件
+ * @param soundFile 铃声文件名
+ */
+export function deleteAlarmSound(soundFile: string) {
+  return request<SettingsSaveResponse>({
+    url: '/settings/alarm-sound-delete',
+    method: 'DELETE',
+    data: { soundFile }
+  })
+}
