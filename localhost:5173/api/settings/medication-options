@@ -12,6 +12,18 @@
       "name": "维生素C",
       "specification": "500mg/片",
       "usage": "饭后服用，每日2次，每次1片"
+    },
+    {
+      "id": "3",
+      "name": "钙片",
+      "specification": "600mg/片",
+      "usage": "每月一次，饭后服用"
+    },
+    {
+      "id": "4",
+      "name": "感冒灵",
+      "specification": "10ml/支",
+      "usage": "感冒时服用，每日3次"
     }
   ]
 }

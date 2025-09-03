@@ -67,6 +67,32 @@ export interface Medication {
 }
 
 /**
+ * 用药方式枚举
+ */
+export type MedicationType = 'once' | 'repeat'
+
+/**
+ * 重复频率枚举
+ */
+export type RepeatFrequency = 'daily' | 'weekly' | 'monthly'
+
+/**
+ * 重复配置接口
+ */
+export interface RepeatConfig {
+  /** 重复频率 */
+  frequency: RepeatFrequency
+  /** 重复间隔（每N天/周/月） */
+  interval: number
+  /** 结束日期（可选） */
+  endDate?: string
+  /** 每周重复的星期几（仅当频率为weekly时使用） */
+  weekDays?: number[]
+  /** 每月重复的日期（仅当频率为monthly时使用） */
+  monthDay?: number
+}
+
+/**
  * 用药时间接口
  */
 export interface MedicationTime {
@@ -74,8 +100,12 @@ export interface MedicationTime {
   id: string
   /** 药物ID */
   medicationId: string
-  /** 用药日期时间 */
+  /** 用药方式：单次或重复 */
+  type: MedicationType
+  /** 用药日期时间（单次）或时间（重复） */
   datetime: string
+  /** 重复配置（仅当type为repeat时使用） */
+  repeatConfig?: RepeatConfig
   /** 是否启用 */
   enabled: boolean
 }

@@ -63,7 +63,10 @@
           <div v-for="time in settingsForm.medicationTimes" :key="time.id" class="time-item">
             <div class="time-info">
               <div class="medication-name">{{ getMedicationName(time.medicationId) }}</div>
-              <div class="time-datetime">{{ formatDateTime(time.datetime) }}</div>
+              <div class="time-datetime">{{ formatMedicationTime(time) }}</div>
+              <div v-if="time.type === 'repeat'" class="repeat-info">
+                <el-tag size="small" type="info">{{ getRepeatDescription(time) }}</el-tag>
+              </div>
             </div>
             <div class="time-actions">
               <el-switch v-model="time.enabled" size="small" @change="debouncedSaveSettings" />
@@ -225,7 +228,7 @@
     <el-dialog
       v-model="addTimeDialogVisible"
       title="添加用药时间"
-      width="500px"
+      width="600px"
       :before-close="handleCloseAddTimeDialog"
     >
       <el-form ref="timeFormRef" :model="timeForm" :rules="timeRules" label-width="100px">
@@ -239,8 +242,17 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="用药时间" prop="datetime">
+
+        <el-form-item label="用药方式" prop="type">
+          <el-radio-group v-model="timeForm.type">
+            <el-radio value="once">单次用药</el-radio>
+            <el-radio value="repeat">重复用药</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
+        <el-form-item :label="timeForm.type === 'once' ? '用药时间' : '用药时间'" prop="datetime">
           <el-date-picker
+            v-if="timeForm.type === 'once'"
             v-model="timeForm.datetime"
             type="datetime"
             placeholder="请选择用药日期和时间"
@@ -248,7 +260,83 @@
             value-format="YYYY-MM-DD HH:mm:ss"
             class="w-full"
           />
+          <el-time-picker
+            v-else
+            v-model="timeForm.datetime"
+            placeholder="请选择用药时间"
+            format="HH:mm"
+            value-format="HH:mm:ss"
+            class="w-full"
+          />
         </el-form-item>
+
+        <!-- 重复配置 -->
+        <template v-if="timeForm.type === 'repeat'">
+          <el-form-item label="重复频率" prop="repeatConfig.frequency">
+            <el-select
+              v-model="timeForm.repeatConfig.frequency"
+              placeholder="请选择重复频率"
+              class="w-full"
+            >
+              <el-option label="每天" value="daily" />
+              <el-option label="每周" value="weekly" />
+              <el-option label="每月" value="monthly" />
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="重复间隔" prop="repeatConfig.interval">
+            <el-input-number
+              v-model="timeForm.repeatConfig.interval"
+              :min="1"
+              :max="365"
+              class="w-full"
+            />
+            <span class="ml-2 text-sm text-gray-500">
+              {{
+                timeForm.repeatConfig.frequency === 'daily'
+                  ? '天'
+                  : timeForm.repeatConfig.frequency === 'weekly'
+                    ? '周'
+                    : '月'
+              }}
+            </span>
+          </el-form-item>
+
+          <!-- 每周重复的星期几选择 -->
+          <el-form-item v-if="timeForm.repeatConfig.frequency === 'weekly'" label="重复星期">
+            <el-checkbox-group v-model="timeForm.repeatConfig.weekDays">
+              <el-checkbox :value="1">周一</el-checkbox>
+              <el-checkbox :value="2">周二</el-checkbox>
+              <el-checkbox :value="3">周三</el-checkbox>
+              <el-checkbox :value="4">周四</el-checkbox>
+              <el-checkbox :value="5">周五</el-checkbox>
+              <el-checkbox :value="6">周六</el-checkbox>
+              <el-checkbox :value="0">周日</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+
+          <!-- 每月重复的日期选择 -->
+          <el-form-item v-if="timeForm.repeatConfig.frequency === 'monthly'" label="每月日期">
+            <el-input-number
+              v-model="timeForm.repeatConfig.monthDay"
+              :min="1"
+              :max="31"
+              class="w-32"
+            />
+            <span class="ml-2 text-sm text-gray-500">日</span>
+          </el-form-item>
+
+          <el-form-item label="结束日期">
+            <el-date-picker
+              v-model="timeForm.repeatConfig.endDate"
+              type="date"
+              placeholder="请选择结束日期（可选）"
+              format="YYYY-MM-DD"
+              value-format="YYYY-MM-DD"
+              class="w-full"
+            />
+          </el-form-item>
+        </template>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -273,7 +361,13 @@ import {
   updateMedication,
   deleteMedication
 } from '@/api/settings'
-import type { MedicationSettings, Medication, MedicationTime } from '@/types/settings'
+import type {
+  MedicationSettings,
+  Medication,
+  MedicationTime,
+  MedicationType,
+  RepeatFrequency
+} from '@/types/settings'
 import type { FormInstance, FormRules } from 'element-plus'
 
 /**
@@ -335,13 +429,27 @@ const addTimeDialogVisible = ref(false)
 const timeFormRef = ref<FormInstance>()
 const timeForm = reactive({
   medicationId: '',
-  datetime: ''
+  type: 'once' as MedicationType,
+  datetime: '',
+  repeatConfig: {
+    frequency: 'daily' as RepeatFrequency,
+    interval: 1,
+    endDate: '',
+    weekDays: [] as number[],
+    monthDay: 1
+  }
 })
 
 // 用药时间表单验证规则
 const timeRules: FormRules = {
   medicationId: [{ required: true, message: '请选择药物', trigger: 'change' }],
-  datetime: [{ required: true, message: '请选择用药时间', trigger: 'change' }]
+  type: [{ required: true, message: '请选择用药方式', trigger: 'change' }],
+  datetime: [{ required: true, message: '请选择用药时间', trigger: 'change' }],
+  'repeatConfig.frequency': [{ required: true, message: '请选择重复频率', trigger: 'change' }],
+  'repeatConfig.interval': [
+    { required: true, message: '请输入重复间隔', trigger: 'blur' },
+    { type: 'number', min: 1, max: 365, message: '重复间隔必须在1-365之间', trigger: 'blur' }
+  ]
 }
 
 /**
@@ -354,7 +462,20 @@ const loadSettings = async () => {
   ])
 
   // 分别设置设置数据和药物数据
-  Object.assign(settingsForm, settingsResponse.data)
+  const settings = settingsResponse.data
+
+  // 兼容旧数据：为没有type字段的用药时间添加默认type
+  if (settings.medicationTimes) {
+    settings.medicationTimes = settings.medicationTimes.map(
+      (time: Partial<MedicationTime>) =>
+        ({
+          ...time,
+          type: time.type || 'once' // 默认为单次用药
+        }) as MedicationTime
+    )
+  }
+
+  Object.assign(settingsForm, settings)
   medications.value = medicationsResponse.data
 
   // 等待所有响应式更新完成后再激活监听器
@@ -523,7 +644,15 @@ const handleCloseAddTimeDialog = () => {
   timeFormRef.value?.resetFields()
   Object.assign(timeForm, {
     medicationId: '',
-    datetime: ''
+    type: 'once' as MedicationType,
+    datetime: '',
+    repeatConfig: {
+      frequency: 'daily' as RepeatFrequency,
+      interval: 1,
+      endDate: '',
+      weekDays: [] as number[],
+      monthDay: 1
+    }
   })
   addTimeDialogVisible.value = false
 }
@@ -537,11 +666,32 @@ const handleAddTime = async () => {
   const valid = await timeFormRef.value.validate().catch(() => false)
   if (!valid) return
 
+  // 验证重复配置
+  if (timeForm.type === 'repeat') {
+    if (
+      timeForm.repeatConfig.frequency === 'weekly' &&
+      timeForm.repeatConfig.weekDays.length === 0
+    ) {
+      ElMessage.error('请至少选择一个重复的星期')
+      return
+    }
+  }
+
   const newTime: MedicationTime = {
     id: Date.now().toString(),
     medicationId: timeForm.medicationId,
+    type: timeForm.type,
     datetime: timeForm.datetime,
     enabled: true
+  }
+
+  // 如果是重复用药，添加重复配置
+  if (timeForm.type === 'repeat') {
+    newTime.repeatConfig = { ...timeForm.repeatConfig }
+    // 清理空的结束日期
+    if (!newTime.repeatConfig.endDate) {
+      delete newTime.repeatConfig.endDate
+    }
   }
 
   settingsForm.medicationTimes.push(newTime)
@@ -583,6 +733,60 @@ const formatDateTime = (datetime: string): string => {
     hour: '2-digit',
     minute: '2-digit'
   })
+}
+
+/**
+ * 格式化用药时间显示
+ */
+const formatMedicationTime = (time: MedicationTime): string => {
+  if (time.type === 'once') {
+    return formatDateTime(time.datetime)
+  } else {
+    // 重复用药只显示时间
+    const [hours, minutes] = time.datetime.split(':')
+    return `${hours}:${minutes}`
+  }
+}
+
+/**
+ * 获取重复描述文本
+ */
+const getRepeatDescription = (time: MedicationTime): string => {
+  if (!time.repeatConfig || time.type !== 'repeat') return ''
+
+  const { frequency, interval, endDate, weekDays, monthDay } = time.repeatConfig
+
+  let description = ''
+
+  // 基础频率描述
+  if (frequency === 'daily') {
+    description = interval === 1 ? '每天' : `每${interval}天`
+  } else if (frequency === 'weekly') {
+    if (interval === 1) {
+      if (weekDays && weekDays.length > 0) {
+        const dayNames = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+        const selectedDays = weekDays.map((day) => dayNames[day]).join('、')
+        description = `每周${selectedDays}`
+      } else {
+        description = '每周'
+      }
+    } else {
+      description = `每${interval}周`
+    }
+  } else if (frequency === 'monthly') {
+    if (interval === 1) {
+      description = monthDay ? `每月${monthDay}日` : '每月'
+    } else {
+      description = `每${interval}月`
+    }
+  }
+
+  // 添加结束日期描述
+  if (endDate) {
+    description += `，至${endDate}`
+  }
+
+  return description
 }
 
 onMounted(() => {
@@ -656,7 +860,11 @@ onMounted(() => {
 }
 
 .time-datetime {
-  @apply text-sm text-gray-600;
+  @apply text-sm text-gray-600 mb-1;
+}
+
+.repeat-info {
+  @apply mt-1;
 }
 
 .medication-actions,
