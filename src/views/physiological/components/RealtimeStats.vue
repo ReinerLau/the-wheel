@@ -5,13 +5,14 @@
       <div class="flex items-center justify-between">
         <div>
           <div class="text-sm text-gray-500 mb-1">体温</div>
-          <el-statistic
+          <div
             v-if="data?.current"
-            :value="data.current.temperature"
-            :precision="1"
-            suffix="°C"
-            :value-style="getValueStyle('temperature')"
-          />
+            class="flex items-baseline text-2xl font-bold"
+            :style="getValueStyle('temperature')"
+          >
+            {{ data.current.temperature.toFixed(1) }}
+            <span class="text-xs text-gray-500 ml-1">°C</span>
+          </div>
           <div v-else class="text-2xl font-bold text-gray-400">-</div>
         </div>
         <div class="text-2xl" :class="getStatusColor('temperature')">🌡️</div>
@@ -24,12 +25,14 @@
       <div class="flex items-center justify-between">
         <div>
           <div class="text-sm text-gray-500 mb-1">心率</div>
-          <el-statistic
+          <div
             v-if="data?.current"
-            :value="data.current.heartRate"
-            suffix="次/分"
-            :value-style="getValueStyle('heartRate')"
-          />
+            class="flex items-baseline text-2xl font-bold"
+            :style="getValueStyle('heartRate')"
+          >
+            {{ data.current.heartRate }}
+            <span class="text-xs text-gray-500 ml-1">次/分</span>
+          </div>
           <div v-else class="text-2xl font-bold text-gray-400">-</div>
         </div>
         <div class="text-2xl" :class="getStatusColor('heartRate')">❤️</div>
@@ -44,13 +47,13 @@
           <div class="text-sm text-gray-500 mb-1">血压</div>
           <div
             v-if="data?.current"
-            class="text-2xl font-bold"
+            class="flex items-baseline text-2xl font-bold"
             :style="getValueStyle('bloodPressure')"
           >
             {{ data.current.bloodPressure.systolic }}/{{ data.current.bloodPressure.diastolic }}
+            <span class="text-xs text-gray-500 ml-1">mmHg</span>
           </div>
           <div v-else class="text-2xl font-bold text-gray-400">-</div>
-          <div class="text-xs text-gray-500">mmHg</div>
         </div>
         <div class="text-2xl" :class="getStatusColor('bloodPressure')">🩺</div>
       </div>
@@ -62,12 +65,14 @@
       <div class="flex items-center justify-between">
         <div>
           <div class="text-sm text-gray-500 mb-1">血氧</div>
-          <el-statistic
+          <div
             v-if="data?.current"
-            :value="data.current.oxygenSaturation"
-            suffix="%"
-            :value-style="getValueStyle('oxygenSaturation')"
-          />
+            class="flex items-baseline text-2xl font-bold"
+            :style="getValueStyle('oxygenSaturation')"
+          >
+            {{ data.current.oxygenSaturation }}
+            <span class="text-xs text-gray-500 ml-1">%</span>
+          </div>
           <div v-else class="text-2xl font-bold text-gray-400">-</div>
         </div>
         <div class="text-2xl" :class="getStatusColor('oxygenSaturation')">🫁</div>
