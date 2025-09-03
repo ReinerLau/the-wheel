@@ -1,0 +1,29 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+# 添加图标
+
+添加 element-plus 图标:
+
+```vue
+<template>
+  <el-icon>
+    <Setting />
+  </el-icon>
+</template>
+
+<script setup lang="ts">
+import { Setting } from '@element-plus/icons-vue'
+</script>
+```
+
+添加 iconify 图标:
+
+```vue
+<template>
+  <div class="i-mdi-bell"></div>
+</template>
+```
