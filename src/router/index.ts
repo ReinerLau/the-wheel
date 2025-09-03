@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import PageLayout from '../layout/PageLayout.vue'
 import patrolHistory from './modules/patrolHistory'
 import physiological from './modules/physiological'
+import settings from './modules/settings'
 import system from './modules/system'
 
 export const constRoutes: RouteRecordRaw[] = [
@@ -13,7 +14,7 @@ export const constRoutes: RouteRecordRaw[] = [
     redirect: { name: 'monitor-index' },
     meta: {
       title: '首页',
-      root: true,
+      root: true
     },
     children: [
       {
@@ -21,10 +22,10 @@ export const constRoutes: RouteRecordRaw[] = [
         name: 'monitor-index',
         component: () => import('@/views/monitor/MonitorIndex.vue'),
         meta: {
-          title: '首页',
-        },
-      },
-    ],
+          title: '首页'
+        }
+      }
+    ]
   },
   {
     path: '/mobile',
@@ -32,8 +33,8 @@ export const constRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/monitor/MobileMonitorIndex.vue'),
     meta: {
       title: '首页',
-      hidden: true,
-    },
+      hidden: true
+    }
   },
   {
     path: '/login',
@@ -41,19 +42,19 @@ export const constRoutes: RouteRecordRaw[] = [
     component: () => import('../views/LoginPage.vue'),
     meta: {
       title: '登录',
-      hidden: true,
-    },
-  },
+      hidden: true
+    }
+  }
 ]
 
 /**
  * 动态路由数组
  */
-export const asyncRoutes = [patrolHistory, physiological, system]
+export const asyncRoutes = [patrolHistory, physiological, settings, system]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: constRoutes,
+  routes: constRoutes
 })
 
 export function resetRouter() {
