@@ -1,16 +1,18 @@
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+  <div class="grid grid-cols-4 gap-4 mb-6">
     <!-- 体温 -->
-    <el-card class="stat-card">
+    <el-card v-loading="loading">
       <div class="flex items-center justify-between">
         <div>
           <div class="text-sm text-gray-500 mb-1">体温</div>
           <el-statistic
+            v-if="data?.current"
             :value="data.current.temperature"
             :precision="1"
             suffix="°C"
             :value-style="getValueStyle('temperature')"
           />
+          <div v-else class="text-2xl font-bold text-gray-400">-</div>
         </div>
         <div class="text-2xl" :class="getStatusColor('temperature')">🌡️</div>
       </div>
@@ -18,15 +20,17 @@
     </el-card>
 
     <!-- 心率 -->
-    <el-card class="stat-card">
+    <el-card v-loading="loading">
       <div class="flex items-center justify-between">
         <div>
           <div class="text-sm text-gray-500 mb-1">心率</div>
           <el-statistic
+            v-if="data?.current"
             :value="data.current.heartRate"
             suffix="次/分"
             :value-style="getValueStyle('heartRate')"
           />
+          <div v-else class="text-2xl font-bold text-gray-400">-</div>
         </div>
         <div class="text-2xl" :class="getStatusColor('heartRate')">❤️</div>
       </div>
@@ -34,13 +38,18 @@
     </el-card>
 
     <!-- 血压 -->
-    <el-card class="stat-card">
+    <el-card v-loading="loading">
       <div class="flex items-center justify-between">
         <div>
           <div class="text-sm text-gray-500 mb-1">血压</div>
-          <div class="text-2xl font-bold" :style="getValueStyle('bloodPressure')">
+          <div
+            v-if="data?.current"
+            class="text-2xl font-bold"
+            :style="getValueStyle('bloodPressure')"
+          >
             {{ data.current.bloodPressure.systolic }}/{{ data.current.bloodPressure.diastolic }}
           </div>
+          <div v-else class="text-2xl font-bold text-gray-400">-</div>
           <div class="text-xs text-gray-500">mmHg</div>
         </div>
         <div class="text-2xl" :class="getStatusColor('bloodPressure')">🩺</div>
@@ -49,15 +58,17 @@
     </el-card>
 
     <!-- 血氧 -->
-    <el-card class="stat-card">
+    <el-card v-loading="loading">
       <div class="flex items-center justify-between">
         <div>
           <div class="text-sm text-gray-500 mb-1">血氧</div>
           <el-statistic
+            v-if="data?.current"
             :value="data.current.oxygenSaturation"
             suffix="%"
             :value-style="getValueStyle('oxygenSaturation')"
           />
+          <div v-else class="text-2xl font-bold text-gray-400">-</div>
         </div>
         <div class="text-2xl" :class="getStatusColor('oxygenSaturation')">🫁</div>
       </div>
@@ -67,15 +78,55 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
 import type { RealtimePhysiologicalData } from '@/types/physiological'
+import { getRealtimePhysiologicalData } from '@/api/physiological'
 
-interface Props {
-  data: RealtimePhysiologicalData
+const data = ref<RealtimePhysiologicalData>()
+const loading = ref(false)
+
+/**
+ * 获取实时生理体征数据
+ */
+const loadRealtimeData = async () => {
+  loading.value = true
+  try {
+    const { data: result } = await getRealtimePhysiologicalData()
+    data.value = result
+  } catch (error) {
+    console.error('获取实时生理体征数据失败:', error)
+    // 保持当前数据不变，或设置为 undefined 显示 "-"
+  } finally {
+    loading.value = false
+  }
 }
 
-const props = defineProps<Props>()
+// 定时刷新数据
+let refreshInterval: number | null = null
 
-// 获取参数状态颜色
+onMounted(async () => {
+  await loadRealtimeData()
+
+  // 每30秒刷新一次实时数据
+  refreshInterval = window.setInterval(loadRealtimeData, 30000)
+})
+
+/**
+ * 清理定时器
+ */
+const cleanup = () => {
+  if (refreshInterval) {
+    clearInterval(refreshInterval)
+    refreshInterval = null
+  }
+}
+
+// 组件卸载时清理
+onUnmounted(cleanup)
+
+/**
+ * 获取参数状态颜色
+ */
 const getStatusColor = (param: string) => {
   const status = getParamStatus(param)
   return {
@@ -85,7 +136,9 @@ const getStatusColor = (param: string) => {
   }
 }
 
-// 获取数值样式
+/**
+ * 获取数值样式
+ */
 const getValueStyle = (param: string) => {
   const status = getParamStatus(param)
   return {
@@ -93,9 +146,15 @@ const getValueStyle = (param: string) => {
   }
 }
 
-// 获取参数状态
+/**
+ * 获取参数状态
+ */
 const getParamStatus = (param: string) => {
-  const { current } = props.data
+  if (!data.value?.current) {
+    return 'normal'
+  }
+
+  const { current } = data.value
 
   switch (param) {
     case 'temperature':
@@ -130,14 +189,3 @@ const getParamStatus = (param: string) => {
   }
 }
 </script>
-
-<style scoped>
-.stat-card {
-  transition: all 0.3s ease;
-}
-
-.stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-</style>
