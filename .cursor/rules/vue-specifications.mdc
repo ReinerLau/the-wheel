@@ -3,6 +3,7 @@ description:
 globs: *.vue
 alwaysApply: false
 ---
+
 # Vue specifications
 
 ## <script> 标签
@@ -17,6 +18,7 @@ alwaysApply: false
 
 - 使用 SCSS 语法
 - 类选择器使用 [@apply](mdc:https:/tailwindcss.com/docs/functions-and-directives#apply-directive) 指令定义样式
+- 禁止修改 Element Plus 的默认样式
 
 ## <template> 标签
 
