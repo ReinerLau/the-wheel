@@ -3,7 +3,9 @@ description:
 globs: *.ts
 alwaysApply: false
 ---
+
 # TypeScript specifications
 
 - 禁止使用 try/catch 捕获错误
 - 使用 [vite.config.ts](mdc:vite.config.ts) 定义的别名规则引入模块
+- 类型定义只从 \*.d.ts 文件中导入
