@@ -53,6 +53,44 @@ export interface AlarmSettings {
 }
 
 /**
+ * 药物信息接口
+ */
+export interface Medication {
+  /** 药物ID */
+  id: string
+  /** 药物名称 */
+  name: string
+  /** 药物规格 */
+  specification: string
+  /** 药物用法 */
+  usage: string
+}
+
+/**
+ * 用药时间接口
+ */
+export interface MedicationTime {
+  /** 时间ID */
+  id: string
+  /** 药物ID */
+  medicationId: string
+  /** 用药日期时间 */
+  datetime: string
+  /** 是否启用 */
+  enabled: boolean
+}
+
+/**
+ * 用药设置接口
+ */
+export interface MedicationSettings {
+  /** 用药提醒开关 */
+  enabled: boolean
+  /** 用药时间列表 */
+  medicationTimes: MedicationTime[]
+}
+
+/**
  * 设置保存响应接口
  */
 export interface SettingsSaveResponse {

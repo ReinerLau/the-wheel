@@ -1,0 +1,17 @@
+{
+  "code": 200,
+  "data": [
+    {
+      "id": "1",
+      "name": "阿司匹林",
+      "specification": "100mg/片",
+      "usage": "饭后服用，每次1片"
+    },
+    {
+      "id": "2",
+      "name": "维生素C",
+      "specification": "500mg/片",
+      "usage": "饭后服用，每日2次，每次1片"
+    }
+  ]
+}

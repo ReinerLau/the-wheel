@@ -3,6 +3,8 @@ import type {
   PhysiologicalSettings,
   AlarmSettings,
   SoundOption,
+  MedicationSettings,
+  Medication,
   SettingsSaveResponse
 } from '@/types/settings'
 
@@ -75,5 +77,73 @@ export function uploadAlarmSound(file: File) {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
+  })
+}
+
+/**
+ * 获取用药设置
+ */
+export function getMedicationSettings() {
+  return request<MedicationSettings>({
+    url: '/settings/medication',
+    method: 'GET'
+  })
+}
+
+/**
+ * 保存用药设置
+ * @param data 设置数据
+ */
+export function saveMedicationSettings(data: MedicationSettings) {
+  return request<SettingsSaveResponse>({
+    url: '/settings/medication-save',
+    method: 'POST',
+    data
+  })
+}
+
+/**
+ * 获取药物选项
+ */
+export function getMedicationOptions() {
+  return request<Medication[]>({
+    url: '/settings/medication-options',
+    method: 'GET'
+  })
+}
+
+/**
+ * 添加药物
+ * @param data 药物数据
+ */
+export function addMedication(data: Omit<Medication, 'id'>) {
+  return request<Medication>({
+    url: '/settings/medication-add',
+    method: 'POST',
+    data
+  })
+}
+
+/**
+ * 编辑药物
+ * @param data 药物数据
+ */
+export function updateMedication(data: Medication) {
+  return request<Medication>({
+    url: '/settings/medication-update',
+    method: 'PUT',
+    data
+  })
+}
+
+/**
+ * 删除药物
+ * @param medicationId 药物ID
+ */
+export function deleteMedication(medicationId: string) {
+  return request<SettingsSaveResponse>({
+    url: '/settings/medication-delete',
+    method: 'DELETE',
+    data: { id: medicationId }
   })
 }

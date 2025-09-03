@@ -1,0 +1,8 @@
+{
+  "code": 200,
+  "data": {
+    "success": true,
+    "message": "用药设置保存成功",
+    "timestamp": "2024-01-01T12:00:00Z"
+  }
+}
