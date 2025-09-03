@@ -1,0 +1,21 @@
+{
+  "code": 200,
+  "data": [
+    {
+      "label": "默认铃声",
+      "value": "default.mp3"
+    },
+    {
+      "label": "警报声1",
+      "value": "alarm1.mp3"
+    },
+    {
+      "label": "警报声2",
+      "value": "alarm2.mp3"
+    },
+    {
+      "label": "提醒铃声",
+      "value": "notification.mp3"
+    }
+  ]
+}

@@ -33,6 +33,26 @@ export interface PhysiologicalSettings {
 }
 
 /**
+ * 铃声选项接口
+ */
+export interface SoundOption {
+  /** 选项标签 */
+  label: string
+  /** 选项值 */
+  value: string
+}
+
+/**
+ * 警报设置接口
+ */
+export interface AlarmSettings {
+  /** 警报开关 */
+  enabled: boolean
+  /** 警报铃声文件名或URL */
+  soundFile: string
+}
+
+/**
  * 设置保存响应接口
  */
 export interface SettingsSaveResponse {
