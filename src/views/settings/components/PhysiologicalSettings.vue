@@ -172,39 +172,16 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, watch, ref, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
-
-/**
- * 生理参数范围接口
- */
-interface PhysiologicalRange {
-  min: number
-  max: number
-}
-
-/**
- * 血压范围接口
- */
-interface BloodPressureRange {
-  systolic: PhysiologicalRange
-  diastolic: PhysiologicalRange
-}
-
-/**
- * 设置表单接口
- */
-interface SettingsForm {
-  temperature: PhysiologicalRange
-  heartRate: PhysiologicalRange
-  bloodPressure: BloodPressureRange
-  oxygenSaturation: PhysiologicalRange
-}
+import { debounce } from 'lodash'
+import { getPhysiologicalSettings, savePhysiologicalSettings } from '@/api/settings'
+import type { PhysiologicalSettings } from '@/types/settings'
 
 /**
  * 默认设置值
  */
-const defaultSettings: SettingsForm = {
+const defaultSettings: PhysiologicalSettings = {
   temperature: { min: 36.0, max: 37.5 },
   heartRate: { min: 60, max: 100 },
   bloodPressure: {
@@ -214,24 +191,43 @@ const defaultSettings: SettingsForm = {
   oxygenSaturation: { min: 95, max: 100 }
 }
 
-const settingsForm = reactive<SettingsForm>({ ...defaultSettings })
+const settingsForm = reactive<PhysiologicalSettings>({ ...defaultSettings })
+const isInitialized = ref(false)
 
 /**
  * 加载现有设置
  */
 const loadSettings = async () => {
-  try {
-    // 这里应该调用 API 获取当前设置
-    // const settings = await getPhysiologicalSettings()
-    // Object.assign(settingsForm, settings)
-
-    // 暂时使用默认设置
-    Object.assign(settingsForm, defaultSettings)
-  } catch (error) {
-    console.error('加载设置失败:', error)
-    ElMessage.error('加载设置失败')
-  }
+  const settings = await getPhysiologicalSettings()
+  Object.assign(settingsForm, settings)
+  // 等待所有响应式更新完成后再激活监听器
+  await nextTick()
+  isInitialized.value = true
 }
+
+/**
+ * 保存设置
+ */
+const saveSettings = async () => {
+  await savePhysiologicalSettings({ ...settingsForm })
+  ElMessage.success('设置保存成功')
+}
+
+// 创建防抖保存函数
+const debouncedSaveSettings = debounce(saveSettings, 500)
+
+/**
+ * 监听表单变化，自动保存
+ */
+watch(
+  () => settingsForm,
+  () => {
+    if (isInitialized.value) {
+      debouncedSaveSettings()
+    }
+  },
+  { deep: true }
+)
 
 onMounted(() => {
   loadSettings()

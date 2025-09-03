@@ -1,0 +1,27 @@
+{
+  "code": 200,
+  "data": {
+    "temperature": {
+      "min": 36,
+      "max": 37.5
+    },
+    "heartRate": {
+      "min": 60,
+      "max": 100
+    },
+    "bloodPressure": {
+      "systolic": {
+        "min": 90,
+        "max": 140
+      },
+      "diastolic": {
+        "min": 60,
+        "max": 90
+      }
+    },
+    "oxygenSaturation": {
+      "min": 95,
+      "max": 100
+    }
+  }
+}
