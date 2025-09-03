@@ -7,3 +7,4 @@ alwaysApply: true
 # API 规范
 
 - API 地址不带 /api 前缀
+- API 风格非 RESTFul 风格
