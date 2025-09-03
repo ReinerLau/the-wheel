@@ -4,7 +4,7 @@ globs:
 alwaysApply: true
 ---
 
-# 生理体征 (Dashboard 页)
+# 生理体征
 
 ## 参数
 
@@ -15,5 +15,14 @@ alwaysApply: true
 
 ## 展示
 
-- 各参数实时数据 (Element Plus - Statisic 组件)
-- 各参数当天整点的数据变化曲线 (Echarts - area chart)
+- 各参数实时数据
+- 各参数当天整点的数据变化曲线
+
+# 设置
+
+## 生理体征
+
+- 体温正常范围
+- 心率正常范围
+- 血压正常范围
+- 血氧正常范围
