@@ -6,7 +6,7 @@
 
     <div ref="chartRef" class="w-full h-64"></div>
 
-    <div v-if="loading" class="flex items-center justify-center h-64">
+    <div v-if="props.loading" class="flex items-center justify-center h-64">
       <el-loading-icon class="mr-2" />
       <span>加载中...</span>
     </div>
@@ -14,22 +14,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import * as echarts from 'echarts'
 import type { ECharts } from 'echarts'
 import type { HistoricalPhysiologicalData } from '@/types/physiological'
-import { getHistoricalPhysiologicalData } from '@/api/physiological'
 
 interface Props {
   parameter: 'temperature' | 'heartRate' | 'systolic' | 'diastolic' | 'oxygenSaturation'
+  historicalData?: HistoricalPhysiologicalData
+  loading?: boolean
 }
 
 const props = defineProps<Props>()
 
 const chartRef = ref<HTMLDivElement>()
 const chart = ref<ECharts>()
-const loading = ref(false)
-const historicalData = ref<HistoricalPhysiologicalData>()
 
 // 参数配置
 const paramConfigs = {
@@ -84,27 +83,16 @@ const initChart = async () => {
   if (!chartRef.value) return
 
   chart.value = echarts.init(chartRef.value)
-  await loadData()
   updateChart()
-}
-
-/**
- * 加载当天历史数据
- */
-const loadData = async () => {
-  loading.value = true
-  const { data } = await getHistoricalPhysiologicalData()
-  historicalData.value = data
-  loading.value = false
 }
 
 /**
  * 更新图表
  */
 const updateChart = () => {
-  if (!chart.value || !historicalData.value) return
+  if (!chart.value || !props.historicalData) return
 
-  const data = historicalData.value.hourlyData
+  const data = props.historicalData.hourlyData
   const xAxisData = Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, '0')}:00`)
   const seriesData = data.map((item) => item[paramConfig.dataKey] || null)
 
@@ -213,6 +201,17 @@ const updateChart = () => {
 const handleResize = () => {
   chart.value?.resize()
 }
+
+// 监听数据变化，重新渲染图表
+watch(
+  () => props.historicalData,
+  () => {
+    if (chart.value && props.historicalData) {
+      updateChart()
+    }
+  },
+  { deep: true }
+)
 
 onMounted(async () => {
   await nextTick()
