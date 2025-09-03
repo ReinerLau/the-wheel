@@ -1,7 +1,10 @@
 <template>
   <div class="hover:bg-[#0000000d] cursor-pointer p-2">
     <el-dropdown class="h-full" trigger="click">
-      <img src="../assets/images/logo.png" class="h-10" />
+      <!-- 图标 -->
+      <el-icon class="h-10 w-10 text-2xl">
+        <Setting />
+      </el-icon>
       <template #dropdown>
         <el-dropdown-menu>
           <!-- <router-link to="/">
@@ -60,6 +63,7 @@
 
 <script setup lang="ts">
 import { ElMessage } from 'element-plus'
+import { Setting } from '@element-plus/icons-vue'
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { setPasswd } from '../api/user'
@@ -77,21 +81,21 @@ const formVisible = ref(false)
 const formData = reactive({
   oldPassword: '',
   newPassword: '',
-  repeatPassword: '',
+  repeatPassword: ''
 })
 const formRules = {
   oldPassword: [
     { required: true, message: '请输入旧密码', trigger: 'blur' },
-    { min: 5, max: 64, message: '密码5-64位', trigger: 'blur' },
+    { min: 5, max: 64, message: '密码5-64位', trigger: 'blur' }
   ],
   newPassword: [
     { required: true, message: '请输入新密码', trigger: 'blur' },
-    { min: 5, max: 64, message: '密码5-64位', trigger: 'blur' },
+    { min: 5, max: 64, message: '密码5-64位', trigger: 'blur' }
   ],
   repeatPassword: [
     { required: true, message: '请再次输入密码', trigger: 'blur' },
-    { min: 5, max: 64, message: '密码5-64位', trigger: 'blur' },
-  ],
+    { min: 5, max: 64, message: '密码5-64位', trigger: 'blur' }
+  ]
 }
 const changePasswordForm = ref(null)
 const loading = ref(false)
@@ -107,14 +111,14 @@ async function handelConfirm() {
     const { code, message } = (await setPasswd({
       oldPassword: formData.oldPassword,
       newPassword: formData.newPassword,
-      repeatPassword: formData.repeatPassword,
+      repeatPassword: formData.repeatPassword
     })) as any
     formVisible.value = false
     if (code === 200) {
       ElMessage({
         type: 'success',
         message,
-        duration: 3 * 1000,
+        duration: 3 * 1000
       })
     }
   } finally {
