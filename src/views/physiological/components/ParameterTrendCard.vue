@@ -1,12 +1,12 @@
 <template>
-  <el-card>
+  <el-card class="h-full flex flex-col" :body-style="{ flex: 1 }">
     <template #header>
       <span>{{ paramConfig.name }} ({{ paramConfig.unit }})</span>
     </template>
 
-    <div ref="chartRef" class="w-full h-64"></div>
+    <div ref="chartRef" class="h-full"></div>
 
-    <div v-if="props.loading" class="flex items-center justify-center h-64">
+    <div v-if="props.loading" class="flex items-center justify-center flex-1">
       <el-loading-icon class="mr-2" />
       <span>加载中...</span>
     </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-2 gap-6 mb-6">
+  <div class="h-full grid grid-cols-2 grid-rows-2 gap-6">
     <ParameterTrendCard
       v-for="parameter in parameters"
       :key="parameter"
