@@ -136,7 +136,7 @@
         ref="medicationFormRef"
         :model="medicationForm"
         :rules="medicationRules"
-        label-width="80px"
+        label-width="100px"
       >
         <el-form-item label="药物名称" prop="name">
           <el-input
@@ -228,7 +228,7 @@
       width="500px"
       :before-close="handleCloseAddTimeDialog"
     >
-      <el-form ref="timeFormRef" :model="timeForm" :rules="timeRules" label-width="80px">
+      <el-form ref="timeFormRef" :model="timeForm" :rules="timeRules" label-width="100px">
         <el-form-item label="选择药物" prop="medicationId">
           <el-select v-model="timeForm.medicationId" placeholder="请选择药物" class="w-full">
             <el-option
