@@ -6,6 +6,10 @@ alwaysApply: true
 
 # 生理体征
 
+## 路由地址
+
+/settings/index
+
 ## 参数
 
 - 体温
@@ -19,6 +23,10 @@ alwaysApply: true
 - 各参数当天整点的数据变化曲线
 
 # 设置
+
+## 路由地址
+
+/physiological/monitor
 
 ## 生理体征
 
