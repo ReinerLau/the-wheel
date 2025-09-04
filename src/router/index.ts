@@ -1,10 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import PageLayout from '../layout/PageLayout.vue'
-import patrolHistory from './modules/patrolHistory'
 import physiological from './modules/physiological'
 import settings from './modules/settings'
-import system from './modules/system'
 
 export const constRoutes: RouteRecordRaw[] = [
   {
@@ -50,7 +48,7 @@ export const constRoutes: RouteRecordRaw[] = [
 /**
  * 动态路由数组
  */
-export const asyncRoutes = [patrolHistory, physiological, settings, system]
+export const asyncRoutes = [physiological, settings]
 
 const router = createRouter({
   history: createWebHistory(),
