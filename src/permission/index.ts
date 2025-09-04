@@ -35,9 +35,9 @@ export default async function checkPermission(app: App) {
  * 检查按钮权限
  */
 function checkButtonPermission(el: HTMLElement, { value }: { value: string }) {
-  const { permissionIds, roles } = useUserStore()
-  if (roles.includes('超级管理员')) return
-  if (!permissionIds.includes(value)) {
+  if (hasPermission(value)) {
+    return true
+  } else {
     el.remove()
   }
 }
