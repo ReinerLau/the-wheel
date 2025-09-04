@@ -5,7 +5,7 @@
   >
     <!-- 左侧后退按钮 - 只在非生理特征路由下显示 -->
     <div v-if="showBackButton" class="flex items-center">
-      <el-button type="text" @click="goBack" class="text-gray-600 hover:text-blue-600 p-1">
+      <el-button link @click="goBack" class="text-gray-600 hover:text-blue-600 p-1">
         <el-icon size="18">
           <ArrowLeft />
         </el-icon>
