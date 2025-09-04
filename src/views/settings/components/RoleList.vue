@@ -111,6 +111,7 @@ const queryForm = ref({
 })
 
 const defaultForm = {
+  id: '',
   name: ''
 }
 
@@ -194,7 +195,7 @@ const handleAdd = () => {
  * 处理编辑角色
  */
 const handleEdit = (row: RoleItem) => {
-  form.value = { ...row }
+  form.value = { id: row.id || '', name: row.name }
   dialogType.value = 'edit'
   dialogVisible.value = true
 }
@@ -211,6 +212,8 @@ const handleDelete = (row: RoleItem) => {
     type: 'warning'
   })
     .then(async () => {
+      if (!row.id) return
+
       try {
         await deleteRole(row.id)
         ElMessage.success('删除成功')
@@ -236,7 +239,7 @@ const handleSubmit = async () => {
         await createRole(form.value)
         ElMessage.success('添加成功')
       } else {
-        await updateRole(form.value)
+        await updateRole({ id: form.value.id, name: form.value.name })
         ElMessage.success('更新成功')
       }
 

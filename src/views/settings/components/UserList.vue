@@ -99,6 +99,7 @@ import {
   getRolesByUser,
   updateUser
 } from '../../../api/user.js'
+import type { CreateUserParams } from '../../../types/user'
 
 /**
  * 用户行数据接口
@@ -270,7 +271,7 @@ const handleSubmit = async () => {
 
     try {
       if (dialogType.value === 'add') {
-        await createUser(form.value)
+        await createUser(form.value as CreateUserParams)
         ElMessage.success('添加成功')
       } else {
         await updateUser(form.value)
@@ -293,7 +294,7 @@ async function handleAssignRole(row: UserRow) {
   drawerVisible.value = true
   drawerLoading.value = true
   try {
-    let res = await fetchRoleList({ limit: 999999 })
+    let res = await fetchRoleList({ page: 1, limit: 999999 })
     roleData.value = res.data.list
     res = await getRolesByUser(row.id)
     if (treeRef.value) {
