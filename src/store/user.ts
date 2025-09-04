@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { getInfo as getInfoApi, login as loginApi, logout as logoutAPI } from '../api/user'
-import { resetRouter } from '../router/index'
 import { getToken, removeToken, setToken } from '../utils/auth'
 
 export const useUserStore = defineStore('user', () => {
@@ -48,7 +47,6 @@ export const useUserStore = defineStore('user', () => {
   async function logout() {
     await logoutAPI()
     removeToken()
-    resetRouter()
     resetState()
   }
 
@@ -65,6 +63,6 @@ export const useUserStore = defineStore('user', () => {
     getInfo,
     roles,
     logout,
-    permissionIds,
+    permissionIds
   }
 })
