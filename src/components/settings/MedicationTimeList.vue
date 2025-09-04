@@ -16,7 +16,9 @@
           <el-switch
             :model-value="time.enabled"
             size="small"
-            @change="(value: boolean) => handleToggleEnabled(time.id, value)"
+            @change="
+              (value: string | number | boolean) => handleToggleEnabled(time.id, Boolean(value))
+            "
           />
           <el-button size="small" type="danger" :icon="Delete" @click="handleRemoveTime(time.id)">
             删除
