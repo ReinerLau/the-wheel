@@ -54,7 +54,7 @@ export const asyncRoutes = [patrolHistory, physiological, settings, system]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: constRoutes
+  routes: [...constRoutes, ...asyncRoutes]
 })
 
 export function resetRouter() {
