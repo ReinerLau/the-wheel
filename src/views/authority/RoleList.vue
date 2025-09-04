@@ -62,7 +62,7 @@
       <el-tree
         ref="treeRef"
         v-loading="loading"
-        :data="treeData"
+        :data="[...PERMISSIONS]"
         :props="menuProps"
         show-checkbox
         :default-expand-all="true"
@@ -85,13 +85,7 @@ import { ref, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 import { createRole, deleteRole, fetchList, getOneRole, updateRole } from '@/api/role'
-import { getAllPermissions, type Permission } from '@/constants/permissions'
-
-interface TreeNode {
-  id: string
-  name: string
-  children?: TreeNode[]
-}
+import { PERMISSIONS } from '@/constants/permissions'
 
 interface RoleItem {
   id?: string
@@ -107,7 +101,6 @@ const dialogType = ref<'add' | 'edit'>('add')
 const formRef = ref<FormInstance>()
 const drawerVisible = ref(false)
 const loading = ref(false)
-const treeData = ref<TreeNode[]>([])
 const treeRef = ref()
 let roleId = ''
 
@@ -186,18 +179,6 @@ const resetQuery = () => {
   }
   currentPage.value = 1
   getList()
-}
-
-/**
- * 构建权限树数据
- */
-const getTreeData = () => {
-  const permissions = getAllPermissions()
-
-  treeData.value = permissions.map((permission: Permission) => ({
-    id: permission.id,
-    name: permission.name
-  }))
 }
 
 /**
@@ -313,7 +294,6 @@ const handleConfirmAssignMenu = async () => {
 
 onMounted(() => {
   getList()
-  getTreeData()
 })
 
 // 暴露给父组件的方法

@@ -1,67 +1,55 @@
 /**
+ * 权限 ID 枚举
+ * 定义系统中所有权限的唯一标识符
+ */
+export enum PermissionId {
+  /** 设置生理体征 */
+  PHYSIOLOGICAL_SETTINGS = 'physiological:settings',
+  /** 设置警报 */
+  ALARM_SETTINGS = 'alarm:settings',
+  /** 设置用药 */
+  MEDICATION_SETTINGS = 'medication:settings',
+  /** 设置权限 */
+  AUTHORITY_SETTINGS = 'authority:settings'
+}
+
+/**
  * 权限列表配置
  * 每个权限包含ID和权限名称
  */
 export interface Permission {
   /** 权限ID */
-  id: string
+  id: PermissionId
   /** 权限名称 */
   name: string
 }
 
 /**
- * 权限列表对象
- * 对象中的每个属性表示一个权限模块
+ * 权限列表数组
+ * 包含系统中所有权限的配置信息
  */
-export const PERMISSIONS: Record<string, Permission> = {
+export const PERMISSIONS: readonly Permission[] = [
   /** 设置生理体征权限 */
-  PHYSIOLOGICAL_SETTINGS: {
-    id: 'physiological:settings',
+  {
+    id: PermissionId.PHYSIOLOGICAL_SETTINGS,
     name: '设置生理体征'
   },
 
   /** 设置警报权限 */
-  ALARM_SETTINGS: {
-    id: 'alarm:settings',
+  {
+    id: PermissionId.ALARM_SETTINGS,
     name: '设置警报'
   },
 
   /** 设置用药权限 */
-  MEDICATION_SETTINGS: {
-    id: 'medication:settings',
+  {
+    id: PermissionId.MEDICATION_SETTINGS,
     name: '设置用药'
   },
 
   /** 设置权限权限 */
-  AUTHORITY_SETTINGS: {
-    id: 'authority:settings',
+  {
+    id: PermissionId.AUTHORITY_SETTINGS,
     name: '设置权限'
   }
-} as const
-
-/**
- * 获取所有权限列表
- * @returns 权限数组
- */
-export function getAllPermissions(): Permission[] {
-  return Object.values(PERMISSIONS)
-}
-
-/**
- * 根据权限ID获取权限信息
- * @param id 权限ID
- * @returns 权限信息或undefined
- */
-export function getPermissionById(id: string): Permission | undefined {
-  return Object.values(PERMISSIONS).find((permission) => permission.id === id)
-}
-
-/**
- * 检查是否有指定权限
- * @param userPermissions 用户权限ID数组
- * @param requiredPermission 需要检查的权限ID
- * @returns 是否有权限
- */
-export function hasPermission(userPermissions: string[], requiredPermission: string): boolean {
-  return userPermissions.includes(requiredPermission)
-}
+] as const

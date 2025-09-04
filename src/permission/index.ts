@@ -4,12 +4,6 @@ import type { App } from 'vue'
 import router from '../router/index'
 import { useUserStore } from '../store/user'
 import { getToken } from '../utils/auth'
-import type { RouteLocationNormalizedGeneric } from 'vue-router'
-
-/**
- * 没有 token 时的路由白名单
- */
-const whiteList = ['/login']
 
 /**
  * 检查权限
@@ -25,10 +19,9 @@ export default async function checkPermission(app: App) {
     if (hasToken) {
       const { getInfo } = useUserStore()
       await getInfo()
-      return true
-    } else {
-      return handleNoToken(to)
     }
+
+    return true
   })
 
   app.directive('has', checkButtonPermission)
@@ -36,16 +29,6 @@ export default async function checkPermission(app: App) {
   router.afterEach(() => {
     NProgress.done()
   })
-}
-
-/**
- * 没有 token 时的路由检查
- */
-function handleNoToken(to: RouteLocationNormalizedGeneric) {
-  if (!whiteList.includes(to.path)) {
-    return '/login'
-  }
-  return true
 }
 
 /**
@@ -57,4 +40,10 @@ function checkButtonPermission(el: HTMLElement, { value }: { value: string }) {
   if (!permissionIds.includes(value)) {
     el.remove()
   }
+}
+
+export function hasPermission(permissionId: string) {
+  const { permissionIds, roles } = useUserStore()
+  if (roles.includes('超级管理员')) return true
+  return permissionIds.includes(permissionId)
 }
