@@ -15,8 +15,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import UserList from '../../authority/UserList.vue'
-import RoleList from '../../authority/RoleList.vue'
+import UserList from './UserList.vue'
+import RoleList from './RoleList.vue'
 
 /**
  * 默认活跃标签页为用户管理
