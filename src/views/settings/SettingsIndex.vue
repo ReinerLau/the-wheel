@@ -9,6 +9,9 @@
     <el-tab-pane label="用药" name="medication">
       <MedicationSettings />
     </el-tab-pane>
+    <el-tab-pane label="权限" name="authority">
+      <AuthoritySettings />
+    </el-tab-pane>
   </el-tabs>
 </template>
 
@@ -17,6 +20,7 @@ import { ref } from 'vue'
 import PhysiologicalSettings from './components/PhysiologicalSettings.vue'
 import AlarmSettings from './components/AlarmSettings.vue'
 import MedicationSettings from './components/MedicationSettings.vue'
+import AuthoritySettings from './components/AuthoritySettings.vue'
 
 const activeTab = ref('physiological')
 </script>
