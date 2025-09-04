@@ -28,6 +28,11 @@ alwaysApply: true
 
 /physiological/monitor
 
+## 通用
+
+- 用户信息
+- 登录/登出
+
 ## 生理体征
 
 - 体温正常范围
