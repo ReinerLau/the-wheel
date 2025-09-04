@@ -10,7 +10,9 @@ export enum PermissionId {
   /** 设置用药 */
   MEDICATION_SETTINGS = 'medication:settings',
   /** 设置权限 */
-  AUTHORITY_SETTINGS = 'authority:settings'
+  AUTHORITY_SETTINGS = 'authority:settings',
+  /** 设置路线 */
+  ROUTE_SETTINGS = 'route:settings'
 }
 
 /**
@@ -51,5 +53,11 @@ export const PERMISSIONS: readonly Permission[] = [
   {
     id: PermissionId.AUTHORITY_SETTINGS,
     name: '设置权限'
+  },
+
+  /** 设置路线权限 */
+  {
+    id: PermissionId.ROUTE_SETTINGS,
+    name: '设置路线'
   }
 ] as const

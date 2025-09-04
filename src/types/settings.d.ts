@@ -121,6 +121,48 @@ export interface MedicationSettings {
 }
 
 /**
+ * 地点接口
+ */
+export interface Location {
+  /** 地点ID */
+  id: string
+  /** 地点名称 */
+  name: string
+  /** X坐标 */
+  x: number
+  /** Y坐标 */
+  y: number
+  /** 创建时间 */
+  createTime?: string
+}
+
+/**
+ * 路线接口
+ */
+export interface Route {
+  /** 路线ID */
+  id: string
+  /** 路线名称 */
+  name: string
+  /** 路线经过的地点ID列表 */
+  locationIds: string[]
+  /** 路线经过的地点详情列表 */
+  locations?: Location[]
+  /** 创建时间 */
+  createTime?: string
+}
+
+/**
+ * 地点坐标信息接口
+ */
+export interface LocationCoordinates {
+  /** X坐标 */
+  x: number
+  /** Y坐标 */
+  y: number
+}
+
+/**
  * 设置保存响应接口
  */
 export interface SettingsSaveResponse {

@@ -5,7 +5,10 @@ import type {
   SoundOption,
   MedicationSettings,
   Medication,
-  SettingsSaveResponse
+  SettingsSaveResponse,
+  Location,
+  Route,
+  LocationCoordinates
 } from '@/types/settings'
 
 /**
@@ -157,5 +160,111 @@ export function deleteAlarmSound(soundFile: string) {
     url: '/settings/alarm-sound-delete',
     method: 'DELETE',
     data: { soundFile }
+  })
+}
+
+// ==================== 地点管理 API ====================
+
+/**
+ * 获取地点列表
+ */
+export function getLocationList() {
+  return request<Location[]>({
+    url: '/settings/location-list',
+    method: 'GET'
+  })
+}
+
+/**
+ * 获取坐标信息
+ */
+export function getLocationCoordinates() {
+  return request<LocationCoordinates>({
+    url: '/settings/location-coordinates',
+    method: 'GET'
+  })
+}
+
+/**
+ * 添加地点
+ * @param data 地点数据
+ */
+export function addLocation(data: Omit<Location, 'id' | 'createTime'>) {
+  return request<Location>({
+    url: '/settings/location-add',
+    method: 'POST',
+    data
+  })
+}
+
+/**
+ * 更新地点
+ * @param data 地点数据
+ */
+export function updateLocation(data: Location) {
+  return request<Location>({
+    url: '/settings/location-update',
+    method: 'PUT',
+    data
+  })
+}
+
+/**
+ * 删除地点
+ * @param locationId 地点ID
+ */
+export function deleteLocation(locationId: string) {
+  return request<SettingsSaveResponse>({
+    url: '/settings/location-delete',
+    method: 'DELETE',
+    data: { id: locationId }
+  })
+}
+
+// ==================== 路线管理 API ====================
+
+/**
+ * 获取路线列表
+ */
+export function getRouteList() {
+  return request<Route[]>({
+    url: '/settings/route-list',
+    method: 'GET'
+  })
+}
+
+/**
+ * 添加路线
+ * @param data 路线数据
+ */
+export function addRoute(data: Omit<Route, 'id' | 'createTime' | 'locations'>) {
+  return request<Route>({
+    url: '/settings/route-add',
+    method: 'POST',
+    data
+  })
+}
+
+/**
+ * 更新路线
+ * @param data 路线数据
+ */
+export function updateRoute(data: Omit<Route, 'createTime' | 'locations'>) {
+  return request<Route>({
+    url: '/settings/route-update',
+    method: 'PUT',
+    data
+  })
+}
+
+/**
+ * 删除路线
+ * @param routeId 路线ID
+ */
+export function deleteRoute(routeId: string) {
+  return request<SettingsSaveResponse>({
+    url: '/settings/route-delete',
+    method: 'DELETE',
+    data: { id: routeId }
   })
 }

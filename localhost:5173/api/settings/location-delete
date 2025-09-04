@@ -1,0 +1,8 @@
+{
+  "code": 200,
+  "data": {
+    "success": true,
+    "message": "地点删除成功",
+    "timestamp": "2024-01-20 14:35:00"
+  }
+}

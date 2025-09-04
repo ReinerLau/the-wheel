@@ -20,6 +20,9 @@
     >
       <MedicationSettings />
     </el-tab-pane>
+    <el-tab-pane v-if="hasPermission(PermissionId.ROUTE_SETTINGS)" label="路线" name="route">
+      <RouteSettings />
+    </el-tab-pane>
     <el-tab-pane
       v-if="hasPermission(PermissionId.AUTHORITY_SETTINGS)"
       label="权限"
@@ -37,6 +40,7 @@ import PhysiologicalSettings from './components/PhysiologicalSettings.vue'
 import AlarmSettings from './components/AlarmSettings.vue'
 import MedicationSettings from './components/MedicationSettings.vue'
 import AuthoritySettings from './components/AuthoritySettings.vue'
+import RouteSettings from './components/RouteSettings.vue'
 import { PermissionId } from '@/constants/permissions'
 import { hasPermission } from '@/permission'
 
