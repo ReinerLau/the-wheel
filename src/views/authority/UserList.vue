@@ -13,9 +13,7 @@
     </div>
 
     <div class="mb-4 flex justify-end">
-      <el-button v-has="buttonPermissions.create" type="primary" @click="handleAdd"
-        >新增用户</el-button
-      >
+      <el-button type="primary" @click="handleAdd">新增用户</el-button>
     </div>
 
     <el-table class="flex-1" :data="tableData" border style="width: 100%">
@@ -23,19 +21,9 @@
       <el-table-column prop="username" label="账号" />
       <el-table-column label="操作" width="240" fixed="right">
         <template #default="{ row }">
-          <el-button v-has="buttonPermissions.edit" link type="primary" @click="handleEdit(row)"
-            >编辑</el-button
-          >
-          <el-button v-has="buttonPermissions.delete" link type="danger" @click="handleDelete(row)"
-            >删除</el-button
-          >
-          <el-button
-            v-has="buttonPermissions.role"
-            link
-            type="success"
-            @click="handleAssignRole(row)"
-            >绑定角色</el-button
-          >
+          <el-button link type="primary" @click="handleEdit(row)">编辑</el-button>
+          <el-button link type="danger" @click="handleDelete(row)">删除</el-button>
+          <el-button link type="success" @click="handleAssignRole(row)">绑定角色</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -99,18 +87,17 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessage, ElMessageBox, FormInstance } from 'element-plus'
+import { ElMessage, ElMessageBox, type FormInstance } from 'element-plus'
 import TreeStore from 'element-plus/es/components/tree/src/model/tree-store'
 import { onMounted, ref } from 'vue'
 import { fetchList as fetchRoleList } from '../../api/role.js'
-import { station } from '../../api/station.js'
 import {
   assignRole,
   createUser,
   deleteUser,
   fetchList,
   getRolesByUser,
-  updateUser,
+  updateUser
 } from '../../api/user.js'
 
 const tableData = ref([])
@@ -124,7 +111,7 @@ const formRef = ref<FormInstance>()
 const queryForm = ref({
   keyword: '',
   page: 1,
-  limit: 10,
+  limit: 10
 })
 
 const defaultForm = {
@@ -133,7 +120,7 @@ const defaultForm = {
   companyId: '',
   email: '',
   password: '',
-  note: '',
+  note: ''
 }
 
 const form = ref({ ...defaultForm })
@@ -141,26 +128,17 @@ const form = ref({ ...defaultForm })
 const formRules = {
   username: [{ required: true, message: '请输入账号' }],
   password: [{ required: true, message: '请输入密码' }],
-  companyId: [{ required: true, message: '请绑定车站' }],
+  companyId: [{ required: true, message: '请绑定车站' }]
 }
 
 const drawerVisible = ref(false)
 const roleProps = {
-  label: 'name',
+  label: 'name'
 }
 const drawerLoading = ref(false)
 const roleData = ref([])
 const treeRef = ref<TreeStore>()
 const userId = ref()
-
-const buttonPermissions = {
-  create: 'authority-user:create',
-  edit: 'authority-user:edit',
-  delete: 'authority-user:delete',
-  role: 'authority-user:role',
-}
-
-const stationList = ref([])
 
 /**
  * 获取用户列表数据
@@ -169,7 +147,7 @@ const getList = async () => {
   const params = {
     page: currentPage.value,
     limit: pageSize.value,
-    keyword: queryForm.value.keyword,
+    keyword: queryForm.value.keyword
   }
 
   try {
@@ -212,7 +190,7 @@ const resetQuery = () => {
   queryForm.value = {
     keyword: '',
     page: 1,
-    limit: 10,
+    limit: 10
   }
   currentPage.value = 1
   getList()
@@ -245,7 +223,7 @@ const handleDelete = (row) => {
   ElMessageBox.confirm('确认删除该用户吗？', '提示', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
-    type: 'warning',
+    type: 'warning'
   })
     .then(async () => {
       try {
@@ -298,7 +276,7 @@ async function handleAssignRole(row) {
     res = await getRolesByUser(row.id)
     treeRef.value.setCheckedKeys(
       res.data.map((item) => item.id),
-      true,
+      true
     )
   } catch {
     ElMessage.error('获取角色数据失败')
@@ -315,7 +293,7 @@ async function handleConfirmAssignRole() {
   try {
     const data = {
       adminId: userId.value,
-      roleIds: treeRef.value.getCheckedKeys().join(','),
+      roleIds: treeRef.value.getCheckedKeys().join(',')
     }
     if (!data.roleIds) {
       ElMessage({ type: 'error', message: '请选择角色' })
@@ -344,7 +322,7 @@ onMounted(() => {
 
 // 暴露给父组件的方法
 defineExpose({
-  getList,
+  getList
 })
 </script>
 

@@ -66,7 +66,7 @@
         :props="menuProps"
         show-checkbox
         :default-expand-all="true"
-        node-key="name"
+        node-key="id"
         :check-strictly="true"
       >
       </el-tree>
@@ -85,17 +85,17 @@ import { ref, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 import { createRole, deleteRole, fetchList, getOneRole, updateRole } from '@/api/role'
-import { asyncRoutes } from '@/router'
+import { getAllPermissions, type Permission } from '@/constants/permissions'
 
 interface TreeNode {
-  path: string
+  id: string
   name: string
-  meta?: {
-    title?: string
-    buttons?: TreeNode[]
-    [key: string]: unknown
-  }
   children?: TreeNode[]
+}
+
+interface RoleItem {
+  id?: string
+  name: string
 }
 
 const tableData = ref([])
@@ -114,24 +114,22 @@ let roleId = ''
 const queryForm = ref({
   name: '',
   page: 1,
-  limit: 10,
+  limit: 10
 })
 
 const defaultForm = {
-  name: '',
+  name: ''
 }
 
 const form = ref({ ...defaultForm })
 
 const rules = {
-  name: [{ required: true, message: '请输入角色名称', trigger: 'blur' }],
+  name: [{ required: true, message: '请输入角色名称', trigger: 'blur' }]
 }
 
 const menuProps = {
-  label: (data) => {
-    return data.meta?.title || ''
-  },
-  children: 'children',
+  label: 'name',
+  children: 'children'
 }
 
 /**
@@ -141,7 +139,7 @@ const getList = async () => {
   const params = {
     page: currentPage.value,
     limit: pageSize.value,
-    name: queryForm.value.name,
+    name: queryForm.value.name
   }
 
   try {
@@ -184,7 +182,7 @@ const resetQuery = () => {
   queryForm.value = {
     name: '',
     page: 1,
-    limit: 10,
+    limit: 10
   }
   currentPage.value = 1
   getList()
@@ -194,23 +192,12 @@ const resetQuery = () => {
  * 构建权限树数据
  */
 const getTreeData = () => {
-  // 只保留最上层节点
-  const topLevelRoutes: TreeNode[] = []
+  const permissions = getAllPermissions()
 
-  asyncRoutes.forEach((route) => {
-    const topNode: TreeNode = {
-      path: route.path,
-      name: route.name,
-    }
-
-    if (route.meta) {
-      topNode.meta = route.meta
-    }
-
-    topLevelRoutes.push(topNode)
-  })
-
-  treeData.value = topLevelRoutes
+  treeData.value = permissions.map((permission: Permission) => ({
+    id: permission.id,
+    name: permission.name
+  }))
 }
 
 /**
@@ -225,7 +212,7 @@ const handleAdd = () => {
 /**
  * 处理编辑角色
  */
-const handleEdit = (row) => {
+const handleEdit = (row: RoleItem) => {
   form.value = { ...row }
   dialogType.value = 'edit'
   dialogVisible.value = true
@@ -234,13 +221,13 @@ const handleEdit = (row) => {
 /**
  * 处理删除角色
  */
-const handleDelete = (row) => {
+const handleDelete = (row: RoleItem) => {
   if (!row.id) return
 
   ElMessageBox.confirm('确认删除该角色吗？', '提示', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
-    type: 'warning',
+    type: 'warning'
   })
     .then(async () => {
       try {
@@ -283,7 +270,9 @@ const handleSubmit = async () => {
 /**
  * 处理绑定权限
  */
-const handleAssignMenu = async (row) => {
+const handleAssignMenu = async (row: RoleItem) => {
+  if (!row.id) return
+
   roleId = row.id
   drawerVisible.value = true
   loading.value = true
@@ -310,7 +299,7 @@ const handleConfirmAssignMenu = async () => {
   try {
     await updateRole({
       id: roleId,
-      menuList: treeRef.value.getCheckedKeys().join(','),
+      menuList: treeRef.value.getCheckedKeys().join(',')
     })
 
     ElMessage.success('绑定权限成功')
@@ -329,7 +318,7 @@ onMounted(() => {
 
 // 暴露给父组件的方法
 defineExpose({
-  getList,
+  getList
 })
 </script>
 

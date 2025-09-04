@@ -15,7 +15,7 @@ const whiteList = ['/login']
  * 检查权限
  */
 export default async function checkPermission(app: App) {
-  router.beforeEach((to) => {
+  router.beforeEach(async (to) => {
     NProgress.start()
     if (typeof to.meta.title === 'string') {
       document.title = to.meta.title
@@ -23,6 +23,8 @@ export default async function checkPermission(app: App) {
 
     const hasToken = getToken()
     if (hasToken) {
+      const { getInfo } = useUserStore()
+      await getInfo()
       return true
     } else {
       return handleNoToken(to)
