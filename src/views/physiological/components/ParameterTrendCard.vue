@@ -4,12 +4,7 @@
       <span>{{ paramConfig.name }} ({{ paramConfig.unit }})</span>
     </template>
 
-    <div ref="chartRef" class="h-full"></div>
-
-    <div v-if="props.loading" class="flex items-center justify-center flex-1">
-      <el-loading-icon class="mr-2" />
-      <span>加载中...</span>
-    </div>
+    <div v-loading="props.loading" ref="chartRef" class="h-full"></div>
   </el-card>
 </template>
 
