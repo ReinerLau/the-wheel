@@ -12,10 +12,6 @@ export default async function checkPermission(app: App) {
   router.beforeEach(async (to) => {
     NProgress.start()
 
-    if (to.name === 'settings') {
-      return true
-    }
-
     if (typeof to.meta.title === 'string') {
       document.title = to.meta.title
     }
@@ -25,6 +21,9 @@ export default async function checkPermission(app: App) {
       const { getInfo } = useUserStore()
       await getInfo()
     } else {
+      if (to.name === 'settings') {
+        return true
+      }
       router.push({ name: 'settings' })
     }
 
