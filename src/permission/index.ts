@@ -11,6 +11,11 @@ import { getToken } from '../utils/auth'
 export default async function checkPermission(app: App) {
   router.beforeEach(async (to) => {
     NProgress.start()
+
+    if (to.name === 'settings') {
+      return true
+    }
+
     if (typeof to.meta.title === 'string') {
       document.title = to.meta.title
     }
@@ -19,6 +24,8 @@ export default async function checkPermission(app: App) {
     if (hasToken) {
       const { getInfo } = useUserStore()
       await getInfo()
+    } else {
+      router.push({ name: 'settings' })
     }
 
     return true
