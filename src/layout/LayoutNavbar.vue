@@ -32,13 +32,13 @@ const route = useRoute()
  * 只有在非生理特征路由下才显示
  */
 const showBackButton = computed(() => {
-  return !route.path.startsWith('/physiological')
+  return route.path.startsWith('/settings')
 })
 
 /**
  * 返回生理特征页面
  */
 const goBack = () => {
-  router.push('/physiological/monitor')
+  router.push('/')
 }
 </script>

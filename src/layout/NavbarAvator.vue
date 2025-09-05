@@ -18,6 +18,6 @@ const router = useRouter()
  * 跳转到设置页面
  */
 function handleSettingsClick() {
-  router.push({ name: 'settings-index' })
+  router.push({ name: 'settings' })
 }
 </script>
